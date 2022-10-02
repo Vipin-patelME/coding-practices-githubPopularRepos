@@ -23,9 +23,6 @@ class GithubPopularRepos extends Component {
   onFilterRepos = async () => {
     const {language} = this.state
     const apiUrl = `https://apis.ccbp.in/popular-repos?language=${language}`
-    const options = {
-      method: 'GET',
-    }
     const response = await fetch(apiUrl, options)
     const data = response.json()
     console.log(data)
