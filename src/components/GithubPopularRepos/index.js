@@ -1,5 +1,6 @@
 import {Component} from 'react'
 import './index.css'
+import Loader from 'react-loader-spinner'
 
 import LanguageFilterItem from '../LanguageFilterItem'
 import RepositoryItem from '../RepositoryItem'
@@ -14,7 +15,7 @@ const languageFiltersData = [
 
 // Write your code here
 class GithubPopularRepos extends Component {
-  state = {language: 'ALL', isactive: false}
+  state = {reposData: [], language: 'ALL', isactive: false, isLoading: true}
 
   componentDidMount() {
     this.onFilterRepos()
@@ -25,16 +26,29 @@ class GithubPopularRepos extends Component {
     const apiUrl = `https://apis.ccbp.in/popular-repos?language=${language}`
     const response = await fetch(apiUrl)
     const data = await response.json()
-    console.log(data)
+    if (response.ok === true) {
+      const repoData = data.popular_repos.map(eachData => ({
+        id: eachData.id,
+        name: eachData.name,
+        issuesCount: eachData.issues_count,
+        forksCount: eachData.forks_count,
+        starsCount: eachData.stars_count,
+      }))
+      this.setState({reposData: repoData, isLoading: false})
+    }
   }
 
   changeLanguage = id => {
-    this.setState({language: id, isactive: true}, this.onFilterRepos)
+    this.setState(
+      {language: id, isactive: true, isLoading: true},
+      this.onFilterRepos,
+    )
   }
 
   render() {
-    const {language, isactive} = this.state
-    console.log(language)
+    const {reposData, isactive, isLoading} = this.state
+
+    console.log(reposData)
     return (
       <div className="main-cont">
         <h1 className="popular">Popular</h1>
@@ -48,7 +62,17 @@ class GithubPopularRepos extends Component {
             />
           ))}
         </ul>
-        <RepositoryItem filteredLanguage={language} />
+        {isLoading ? (
+          <div testid="loader">
+            <Loader type="ThreeDots" color="#0284c7" height={80} width={80} />
+          </div>
+        ) : (
+          <ul className="all-repos-cont">
+            {reposData.map(eachRepos => (
+              <RepositoryItem filteredLanguage={eachRepos} key={eachRepos.id} />
+            ))}
+          </ul>
+        )}
       </div>
     )
   }
