@@ -34,7 +34,11 @@
   border-color: #0284c7;
   font-family: 'Roboto';
   color: #0284c7;
-
   font-weight: 510;
   font-size: 16px;
+}
+.all-repos-cont {
+  display: flex;
+  flex-wrap: wrap;
+  width: 90%;
 }
