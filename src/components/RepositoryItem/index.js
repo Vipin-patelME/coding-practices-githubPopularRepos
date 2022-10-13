@@ -6,7 +6,36 @@ import './index.css'
 class RepositoryItem extends Component {
   render() {
     const {filteredLanguage} = this.props
-    return <h1>{filteredLanguage}</h1>
+    const {name, starsCount, forksCount, issuesCount} = filteredLanguage
+    return (
+      <li className="each-repo">
+        <h1 className="repo-name">{name}</h1>
+        <div className="logo-cont">
+          <img
+            src="https://assets.ccbp.in/frontend/react-js/stars-count-img.png"
+            alt="stars"
+            className="image-style"
+          />
+          <p>{starsCount} count</p>
+        </div>
+        <div className="logo-cont">
+          <img
+            src="https://assets.ccbp.in/frontend/react-js/forks-count-img.png"
+            alt="forks"
+            className="image-style"
+          />
+          <p>{forksCount} count</p>
+        </div>
+        <div className="logo-cont">
+          <img
+            src="https://assets.ccbp.in/frontend/react-js/issues-count-img.png"
+            alt="open issues"
+            className="image-style"
+          />
+          <p>{issuesCount} count</p>
+        </div>
+      </li>
+    )
   }
 }
 export default RepositoryItem
